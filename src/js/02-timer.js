@@ -1,8 +1,8 @@
 // 02-timer.js
-import flatpickr from "flatpickr";
-import "flatpickr/dist/flatpickr.min.css";
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 
-const datePicker = document.getElementById("datetime-picker");
+const datePicker = document.getElementById('datetime-picker');
 const startButton = document.querySelector('[data-start]');
 const daysElement = document.querySelector('[data-days]');
 const hoursElement = document.querySelector('[data-hours]');
@@ -16,12 +16,12 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     const selectedDate = selectedDates[0];
-    
+
     if (selectedDate > new Date()) {
-      startButton.removeAttribute("disabled");
+      startButton.removeAttribute('disabled');
     } else {
-      startButton.setAttribute("disabled", "disabled");
-      alert("Please choose a date in the future");
+      startButton.setAttribute('disabled', 'disabled');
+      alert('Please choose a date in the future');
     }
   },
 };
@@ -53,7 +53,7 @@ function updateTimerDisplay(time) {
   secondsElement.textContent = addLeadingZero(time.seconds);
 }
 
-startButton.addEventListener("click", () => {
+startButton.addEventListener('click', () => {
   const selectedDate = new Date(datePicker.value);
   const currentDate = new Date();
   const timeDifference = selectedDate - currentDate;
@@ -63,10 +63,15 @@ startButton.addEventListener("click", () => {
       const timeRemaining = convertMs(selectedDate - new Date());
       updateTimerDisplay(timeRemaining);
 
-      if (timeRemaining.days === 0 && timeRemaining.hours === 0 && timeRemaining.minutes === 0 && timeRemaining.seconds === 0) {
+      if (
+        timeRemaining.days === 0 &&
+        timeRemaining.hours === 0 &&
+        timeRemaining.minutes === 0 &&
+        timeRemaining.seconds === 0
+      ) {
         clearInterval(countdownInterval);
-        startButton.setAttribute("disabled", "disabled");
-        alert("Countdown completed!");
+        startButton.setAttribute('disabled', 'disabled');
+        alert('Countdown completed!');
       }
     }, 1000);
   }

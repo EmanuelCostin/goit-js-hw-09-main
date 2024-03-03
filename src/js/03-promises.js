@@ -2,9 +2,9 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const promiseForm = document.querySelector(".form");
+const promiseForm = document.querySelector('.form');
 
-promiseForm.addEventListener("submit", handleSubmit);
+promiseForm.addEventListener('submit', handleSubmit);
 
 async function handleSubmit(event) {
   event.preventDefault();
@@ -15,12 +15,16 @@ async function handleSubmit(event) {
 
   let currentDelay = initialDelay;
 
-  const createAndLogPromise = async (position) => {
+  const createAndLogPromise = async position => {
     try {
-      console.log("Fulfilled promise " + position + " in " + currentDelay + "ms");
+      console.log(
+        'Fulfilled promise ' + position + ' in ' + currentDelay + 'ms'
+      );
       await sleep(currentDelay);
     } catch (error) {
-      console.log("Rejected promise " + position + " in " + currentDelay + "ms");
+      console.log(
+        'Rejected promise ' + position + ' in ' + currentDelay + 'ms'
+      );
       throw error; // Re-throw the error so it propagates up
     }
   };
@@ -31,7 +35,7 @@ async function handleSubmit(event) {
         await createAndLogPromise(i);
       } catch (error) {
         // Handle the error if needed
-        console.error("Error creating promise:", error);
+        console.error('Error creating promise:', error);
       }
       currentDelay += step;
     }
