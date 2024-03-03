@@ -1,3 +1,6 @@
+
+import Notiflix from 'notiflix';
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -5,6 +8,19 @@ function sleep(ms) {
 const promiseForm = document.querySelector('.form');
 
 promiseForm.addEventListener('submit', handleSubmit);
+
+async function createPromise(position, delay) {
+  const shouldResolve = Math.random() > 0.3;
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (shouldResolve) {
+        resolve({ position, delay });
+      } else {
+        reject({ position, delay });
+      }
+    }, delay);
+  });
+}
 
 async function handleSubmit(event) {
   event.preventDefault();
@@ -15,33 +31,19 @@ async function handleSubmit(event) {
 
   let currentDelay = initialDelay;
 
-  const createAndLogPromise = async position => {
-    try {
-      console.log(
-        'Fulfilled promise ' + position + ' in ' + currentDelay + 'ms'
-      );
-      await sleep(currentDelay);
-    } catch (error) {
-      console.log(
-        'Rejected promise ' + position + ' in ' + currentDelay + 'ms'
-      );
-      throw error; // Re-throw the error so it propagates up
-    }
-  };
-
   const createPromises = async () => {
     for (let i = 1; i <= amount; i++) {
       try {
-        await createAndLogPromise(i);
+        const result = await createPromise(i, currentDelay);
+        Notiflix.Notify.Success(`✅ Fulfilled promise ${result.position} in ${result.delay}ms`);
       } catch (error) {
-        // Handle the error if needed
-        console.error('Error creating promise:', error);
+        Notiflix.Notify.Failure(`❌ Rejected promise ${error.position} in ${error.delay}ms`);
       }
       currentDelay += step;
     }
   };
 
-  await createPromises(); // Wait for all promises to complete
+  await createPromises();
 
   form.reset();
 }
